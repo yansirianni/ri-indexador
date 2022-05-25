@@ -1,3 +1,4 @@
+from pydoc import doc
 from IPython.display import clear_output
 from typing import List, Set, Union
 from abc import abstractmethod
@@ -15,20 +16,21 @@ class Index:
 
     def index(self, term: str, doc_id: int, term_freq: int):
         if term not in self.dic_index:
-            int_term_id = None
+            int_term_id = len(self.dic_index.keys())
             self.dic_index[term] = self.create_index_entry(int_term_id)
         else:
-            int_term_id = None
+            int_term_id = self.get_term_id(term)
 
+        self.set_documents.add(doc_id)
         self.add_index_occur(self.dic_index[term], doc_id, int_term_id, term_freq)
 
     @property
     def vocabulary(self) -> List[str]:
-        return []
+        return list(self.dic_index.keys())
 
     @property
     def document_count(self) -> int:
-        return 0
+        return len(self.set_documents)
 
     @abstractmethod
     def get_term_id(self, term: str):
@@ -104,13 +106,17 @@ class HashIndex(Index):
         return self.dic_index[term][0].term_id
 
     def create_index_entry(self, termo_id: int) -> List:
-        return None
+        return []
 
     def add_index_occur(self, entry_dic_index: List[TermOccurrence], doc_id: int, term_id: int, term_freq: int):
-        entry_dic_index.append(None)
+        entry_dic_index.append(TermOccurrence(doc_id, term_id, term_freq))
 
     def get_occurrence_list(self, term: str) -> List:
-        return []
+        if term not in self.dic_index:
+            return []
+        else:
+            return self.dic_index[term]
+
 
     def document_count_with_term(self, term: str) -> int:
         return 0
