@@ -119,7 +119,7 @@ class HashIndex(Index):
 
 
     def document_count_with_term(self, term: str) -> int:
-        return 0
+        return len(self.get_occurrence_list(term))
 
 
 class TermFilePosition:
