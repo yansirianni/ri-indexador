@@ -88,10 +88,19 @@ class TermOccurrence:
         return hash((self.doc_id, self.term_id))
 
     def __eq__(self, other_occurrence: "TermOccurrence"):
+        if other_occurrence is not None:
+            if self.term_id == other_occurrence.term_id and self.doc_id == other_occurrence.doc_id:
+                return True
+        
         return False
 
     def __lt__(self, other_occurrence: "TermOccurrence"):
-        return False
+        if other_occurrence is None:
+            return False
+
+        if self.term_id == other_occurrence.term_id:
+            return self.doc_id < other_occurrence.doc_id
+        return self.term_id < other_occurrence.term_id
 
     def __str__(self):
         return f"( doc: {self.doc_id} term_id:{self.term_id} freq: {self.term_freq})"
