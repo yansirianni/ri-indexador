@@ -206,8 +206,15 @@ class FileIndex(Index):
         da lista com a primeira posição do arquivo usando os métodos next_from_list e next_from_file
         e use o método write do TermOccurrence para armazenar cada ocorrencia do novo índice ordenado"""
         self.lst_occurrences_tmp = sorted(self.lst_occurrences_tmp, key=lambda x: (x is None,x))
+
         oldFilename = self.str_idx_file_name
+
+        if oldFilename == "occur_idx_file":
+            file = open(oldFilename, "wb") 
+            file.close()
+
         newFileName = f"occur_idx_file_{ self.idx_file_counter}.idx"
+        
         with open(oldFilename,"rb") as idx_new:
             with open(newFileName,"wb") as idx_new_file:
                 file = self.next_from_file(idx_new)
