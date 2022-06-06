@@ -49,7 +49,8 @@ class Cleaner:
         return None
 
     def preprocess_text(self, text: str) -> str or None:
-        return None
+        return self.remove_accents(text.lower())
+        
 class HTMLIndexer:
     cleaner = Cleaner(stop_words_file="stopwords.txt",
                       language="portuguese",
