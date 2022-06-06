@@ -286,22 +286,23 @@ class FileIndex(Index):
                 file = self.next_from_file(idx_file)         
 
 
-    def get_occurrence_list(self, term: str) -> List:
+    def get_occurrence_list(self, term: str) -> List:        
         
+        occurList = []
+
         if term in self.dic_index.keys():
-            with open(self.str_idx_file_name, 'rb') as idx_file:
-                position:TermFilePosition = self.dic_index[term]
-                idx_file.seek(position.term_file_start_pos)
-                occurList= []
+            
+            with open(self.str_idx_file_name, 'rb') as idx_file:                  
+                idx_file.seek(self.dic_index[term].term_file_start_pos)                
                 file = self.next_from_file(idx_file)
+
                 while file:
                     occurList.append(file)
                     file = self.next_from_file(idx_file)
-                    if position.doc_count_with_term == len(occurList):
-                        break
+                    if self.dic_index[term].doc_count_with_term == len(occurList):
+                        break               
                 
-                return occurList
-        return []
+        return occurList
 
     def document_count_with_term(self, term: str) -> int:
         return len(self.get_occurrence_list(term))
