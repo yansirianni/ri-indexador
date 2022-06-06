@@ -55,12 +55,16 @@ class Index:
         pass
 
     def write(self, arq_index: str):
-        pass
+        with open(arq_index, 'wb') as idx_file:
+            pickle.dump(self,idx_file)
+                
+        
     
 
     @staticmethod
     def read(arq_index: str):
-        pass
+        with open(arq_index, 'rb') as idx_file:
+            return pickle.load(idx_file)
 
     def __str__(self):
         arr_index = []
@@ -162,7 +166,7 @@ class FileIndex(Index):
         return self.dic_index[term].term_id
 
     def create_index_entry(self, term_id: int) -> TermFilePosition:
-        return None
+        return TermFilePosition(term_id)
 
     def add_index_occur(self, entry_dic_index: TermFilePosition, doc_id: int, term_id: int, term_freq: int):
         #complete aqui adicionando um novo TermOccurrence na lista lst_occurrences_tmp
@@ -170,8 +174,12 @@ class FileIndex(Index):
         term = TermOccurrence(doc_id,term_id,term_freq)
         self.lst_occurrences_tmp[self.idx_tmp_occur_last_element+1]= term
         self.idx_tmp_occur_last_element +=1
-        if None:
+        
+        if self.idx_tmp_occur_last_element+1 == self.TMP_OCCURRENCES_LIMIT:
             self.save_tmp_occurrences()
+            self.idx_tmp_occur_last_element  = -1
+            self.idx_tmp_occur_first_element = 0
+        
     def get_tmp_occur_size(self):
         return self.idx_tmp_occur_last_element - self.idx_tmp_occur_first_element +1
         
@@ -279,7 +287,21 @@ class FileIndex(Index):
 
 
     def get_occurrence_list(self, term: str) -> List:
+        
+        if term in self.dic_index.keys():
+            with open(self.str_idx_file_name, 'rb') as idx_file:
+                position:TermFilePosition = self.dic_index[term]
+                idx_file.seek(position.term_file_start_pos)
+                occurList= []
+                file = self.next_from_file(idx_file)
+                while file:
+                    occurList.append(file)
+                    file = self.next_from_file(idx_file)
+                    if position.doc_count_with_term == len(occurList):
+                        break
+                
+                return occurList
         return []
 
     def document_count_with_term(self, term: str) -> int:
-        return 0
+        return len(self.get_occurrence_list(term))
