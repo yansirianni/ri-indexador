@@ -254,22 +254,29 @@ class FileIndex(Index):
         # obj_termo é a instancia TermFilePosition correspondente ao id_termo
         dic_ids_por_termo = {}
         for str_term, obj_term in self.dic_index.items():
-            dic_ids_por_termo[str_term] = obj_term
-            pass
-        print(self.dic_index.items())
-
+            dic_ids_por_termo[obj_term.term_id] = str_term
+  
         with open(self.str_idx_file_name, 'rb') as idx_file:
             # navega nas ocorrencias para atualizar cada termo em dic_ids_por_termo
             # apropriadamente
             file = self.next_from_file(idx_file)
-            while file:
-                dic_ids_por_termo[file.term_id] = TermFilePosition(file.term_id,file.doc_id,file.term_freq)   
-                file = self.next_from_file(idx_file)           
-            pass
-        for str_term,obj_term in self.dic_index.items():
-            self.dic_index[str_term] = dic_ids_por_termo[obj_term.term_id]
-            print(self.dic_index[str_term])
-            
+            size_of_occur = 0;
+
+            while file:   
+
+                term = dic_ids_por_termo[file.term_id]            
+
+                if self.dic_index[term].doc_count_with_term is None:
+                    self.dic_index[term].doc_count_with_term = 0
+
+                if self.dic_index[term].term_file_start_pos is None:
+                    self.dic_index[term].term_file_start_pos = size_of_occur
+
+                self.dic_index[term].doc_count_with_term += 1
+
+                size_of_occur += 12              
+                file = self.next_from_file(idx_file)         
+
 
     def get_occurrence_list(self, term: str) -> List:
         return []

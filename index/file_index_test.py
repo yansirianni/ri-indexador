@@ -152,7 +152,7 @@ class FileIndexTest(unittest.TestCase):
 
         arr_termos = ["casa","verde","prédio","amarelo"]
         #testa se o id manteve-se o mesmo
-        [self.assertEqual(self.index.dic_index[arr_termos[i]].term_id,i+1,f"O id do termo {i+1} mudou para {self.index.dic_index[arr_termos[i]].term_id}") for i in range(4)]
+        [self.assertEqual(self.index.dic_index[arr_termos[i]].term_id, i+1, f"O id do termo {i+1} mudou para {self.index.dic_index[arr_termos[i]].term_id}") for i in range(4)]
 
 
 
