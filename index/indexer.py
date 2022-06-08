@@ -46,7 +46,15 @@ class Cleaner:
         return term.translate(self.accents_translation_table)
 
     def preprocess_word(self, term: str) -> str or None:
-        return None
+
+        if self.perform_stemming:
+            term = self.word_stem(term)
+        
+        if self.perform_stop_words_removal:
+            if self.is_stop_word(term) or term in self.set_punctuation:
+                return None                
+                
+        return term
 
     def preprocess_text(self, text: str) -> str or None:
         return self.remove_accents(text.lower())
@@ -63,7 +71,18 @@ class HTMLIndexer:
 
     def text_word_count(self, plain_text: str):
         dic_word_count = {}
+        plain_text = self.cleaner.preprocess_text(plain_text)
+        words = word_tokenize(plain_text)
+        words = [self.cleaner.preprocess_word(word) for word in words]
+        for word in words:
+            if word is not None:        
+                word = self.cleaner.preprocess_word(word) 
 
+                if word in dic_word_count.keys():           
+                    dic_word_count[word] += 1
+                else:
+                    dic_word_count[word] = 1
+        
         return dic_word_count
 
     def index_text(self, doc_id: int, text_html: str):
