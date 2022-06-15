@@ -53,7 +53,6 @@ class Cleaner:
         if self.perform_stop_words_removal:
             if self.is_stop_word(term) or term in self.set_punctuation:
                 return None                
-                
         return term
 
     def preprocess_text(self, text: str) -> str or None:
@@ -73,24 +72,25 @@ class HTMLIndexer:
         dic_word_count = {}
         plain_text = self.cleaner.preprocess_text(plain_text)
         words = word_tokenize(plain_text)
-        words = [self.cleaner.preprocess_word(word) for word in words]
         for word in words:
-            if word is not None:        
-                word = self.cleaner.preprocess_word(word) 
-
-                if word in dic_word_count.keys():           
+            word = self.cleaner.preprocess_word(word) 
+            if word is not None:      
+                
+                if word in dic_word_count.keys():  
                     dic_word_count[word] += 1
                 else:
                     dic_word_count[word] = 1
-        
+                
+               
+                    
         return dic_word_count
 
     def index_text(self, doc_id: int, text_html: str):
         plain_text = self.cleaner.html_to_plain_text(text_html)
         words = self.text_word_count(plain_text)
         [self.index.index(word, doc_id, words[word]) for word in words]  
-        self.index.finish_indexing()      
-
+        self.index.finish_indexing()  
+    
     def index_text_dir(self, path: str):
         for str_sub_dir in os.listdir(path):
             path_sub_dir = f"{path}/{str_sub_dir}"
@@ -98,5 +98,6 @@ class HTMLIndexer:
             for file in os.listdir(path_sub_dir):
                 path_file = f"{path}/{str_sub_dir}/{file}"
                 with open(path_file, encoding='utf-8') as file_content:
-                    doc_id = int(str_sub_dir.split(".")[0])
+                    doc_id = int(file.split(".")[0])
                     self.index_text(doc_id, file_content)
+                    
