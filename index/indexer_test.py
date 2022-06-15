@@ -17,6 +17,7 @@ class IndexerTest(unittest.TestCase):
         lst_occur = obj_index.get_occurrence_list("cas")
         dic_expected = {111:TermOccurrence(111,2,1),
                         100102:TermOccurrence(100102,2,2)}
+        print(lst_occur)
         for occur in lst_occur:
                 self.assertTrue(type(occur.doc_id) == int,f"O tipo do documento deveria ser inteiro")
                 self.assertTrue(occur.doc_id in dic_expected,f"O docid número {occur.doc_id} não deveria existir ou não deveria indexar o termo 'cas'")

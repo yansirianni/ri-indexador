@@ -233,7 +233,6 @@ class FileIndex(Index):
                             if(file<list):
                                 file.write(idx_new_file)
                                 file = self.next_from_file(idx_new)
-                                print(file)
                             else:
                                 list.write(idx_new_file)
                                 list = self.next_from_list()
@@ -273,7 +272,7 @@ class FileIndex(Index):
             while file:   
 
                 term = dic_ids_por_termo[file.term_id]            
-
+                print(f"Termo: {term} termid: {file.term_id} docid: {file.doc_id}")
                 if self.dic_index[term].doc_count_with_term is None:
                     self.dic_index[term].doc_count_with_term = 0
 
@@ -294,15 +293,14 @@ class FileIndex(Index):
             
             with open(self.str_idx_file_name, 'rb') as idx_file:
                 idx_file.seek(self.dic_index[term].term_file_start_pos)
+                print(f"Numero de ocorrencias: {self.dic_index[term].doc_count_with_term}")
                 file = self.next_from_file(idx_file)
-                
                 while file:
-                    occurList.append(file)
-                    file = self.next_from_file(idx_file)
-
-                    if self.dic_index[term].doc_count_with_term == len(occurList):
+                    
+                    if self.dic_index[term].doc_count_with_term == len(occurList):                    
                         break
-                                
+                    occurList.append(file)
+                    file = self.next_from_file(idx_file)            
         return occurList
 
     def document_count_with_term(self, term: str) -> int:
