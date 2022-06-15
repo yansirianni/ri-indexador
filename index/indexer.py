@@ -89,7 +89,7 @@ class HTMLIndexer:
         plain_text = self.cleaner.html_to_plain_text(text_html)
         words = self.text_word_count(plain_text)
         [self.index.index(word, doc_id, words[word]) for word in words]  
-        self.index.finish_indexing()  
+        
     
     def index_text_dir(self, path: str):
         for str_sub_dir in os.listdir(path):
@@ -101,3 +101,4 @@ class HTMLIndexer:
                     doc_id = int(file.split(".")[0])
                     self.index_text(doc_id, file_content)
                     
+        self.index.finish_indexing()  
