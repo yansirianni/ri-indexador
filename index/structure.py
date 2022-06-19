@@ -217,9 +217,10 @@ class FileIndex(Index):
 
         oldFilename = self.str_idx_file_name
 
-        if oldFilename == "occur_idx_file":
-            file = open(oldFilename, "wb") 
-            file.close()
+        #if oldFilename == "occur_idx_file":
+        #Cria o arquivo se nao existir
+        file = open(oldFilename, "wb") 
+        file.close()
 
         newFileName = f"occur_idx_file_{ self.idx_file_counter}.idx"
         
