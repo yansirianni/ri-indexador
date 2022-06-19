@@ -6,6 +6,7 @@ from os import path
 import os
 import pickle
 import gc
+import sys
 
 
 class Index:
@@ -63,6 +64,7 @@ class Index:
 
     @staticmethod
     def read(arq_index: str):
+        sys.path.append('index')
         with open(arq_index, 'rb') as idx_file:
             return pickle.load(idx_file)
 
@@ -217,10 +219,10 @@ class FileIndex(Index):
 
         oldFilename = self.str_idx_file_name
 
-        #if oldFilename == "occur_idx_file":
-        #Cria o arquivo se nao existir
-        file = open(oldFilename, "wb") 
-        file.close()
+        if oldFilename == "occur_idx_file":
+            #Cria o arquivo se nao existir
+            file = open(oldFilename, "wb") 
+            file.close()
 
         newFileName = f"occur_idx_file_{ self.idx_file_counter}.idx"
         
