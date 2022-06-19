@@ -93,10 +93,10 @@ class HTMLIndexer:
         
     
     def index_text_dir(self, path: str):
-        for str_sub_dir in os.listdir(path):
+        for str_sub_dir in tqdm(os.listdir(path)):
             path_sub_dir = f"{path}/{str_sub_dir}"
 
-            for file in tqdm(os.listdir(path_sub_dir)):
+            for file in os.listdir(path_sub_dir):
                 path_file = f"{path}/{str_sub_dir}/{file}"
                 with open(path_file, encoding='utf-8') as file_content:
                     doc_id = int(file.split(".")[0])
