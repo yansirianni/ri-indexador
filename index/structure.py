@@ -294,7 +294,7 @@ class FileIndex(Index):
             
             with open(self.str_idx_file_name, 'rb') as idx_file:
                 idx_file.seek(self.dic_index[term].term_file_start_pos)
-                print(f"Numero de ocorrencias: {self.dic_index[term].doc_count_with_term}")
+                #print(f"Numero de ocorrencias: {self.dic_index[term].doc_count_with_term}")
                 file = self.next_from_file(idx_file)
                 while file:
                     
