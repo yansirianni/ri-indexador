@@ -271,8 +271,8 @@ class FileIndex(Index):
 
             while file:   
 
-                term = dic_ids_por_termo[file.term_id]            
-                print(f"Termo: {term} termid: {file.term_id} docid: {file.doc_id}")
+                term = dic_ids_por_termo[file.term_id]          
+                
                 if self.dic_index[term].doc_count_with_term is None:
                     self.dic_index[term].doc_count_with_term = 0
 

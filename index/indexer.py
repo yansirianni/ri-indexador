@@ -1,5 +1,6 @@
 from nltk.stem.snowball import SnowballStemmer
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 import string
 from nltk.tokenize import word_tokenize
 import os
@@ -95,7 +96,7 @@ class HTMLIndexer:
         for str_sub_dir in os.listdir(path):
             path_sub_dir = f"{path}/{str_sub_dir}"
 
-            for file in os.listdir(path_sub_dir):
+            for file in tqdm(os.listdir(path_sub_dir)):
                 path_file = f"{path}/{str_sub_dir}/{file}"
                 with open(path_file, encoding='utf-8') as file_content:
                     doc_id = int(file.split(".")[0])
